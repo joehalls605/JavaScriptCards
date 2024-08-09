@@ -97,6 +97,7 @@ function filterQuestionsByTopic(){
     console.log('Selected Value:', selectedValue);
 
     filteredQuestions = topicData.filter(item => item.topic === selectedValue);
+    shuffleQuestions(filteredQuestions);
 
     if(filteredQuestions.length > 0){
         showCard(currentQuestionIndex);
@@ -105,6 +106,24 @@ function filterQuestionsByTopic(){
         console.log("No more questions for this topic.");
     }
 }
+
+// Shuffling the questions generally - unfinished.
+function shuffleQuestions(filteredQuestions){
+    if(filteredQuestions){
+        for(let i = filteredQuestions.length - 1; i > 0; i--){
+            // Generate a random index between 0 and i (inclusive)
+            const j = Math.floor(Math.random() * (i + 1));
+            [filteredQuestions[i], filteredQuestions[j]] = [filteredQuestions[j], filteredQuestions[i]];
+        }
+        console.log("randomised"+ filteredQuestions);
+        return filteredQuestions
+    }
+    else{
+        console.log("topic data is empty!");
+    }
+    
+}
+
 
 
 function showCard(index){
@@ -122,7 +141,6 @@ function showCard(index){
             revealAnswerElement.textContent = answer;
         });
 
-        // NEED TO UPDATE DOM TO SHOW THIS.
     }
     else{
         console.log("No more questions");
@@ -141,19 +159,3 @@ function showNextQuestion(){
 }
 
 
-// Shuffling the questions generally - unfinished.
-function shuffleQuestions(topicData){
-    if(topicData){
-        for(let i = topicData.length - 1; i > 0; i--){
-            // Generate a random index between 0 and i (inclusive)
-            const j = Math.floor(Math.random() * (i + 1));
-            [topicData[i], topicData[j]] = [topicData[j], topicData[i]];
-        }
-        console.log("randomised"+ topicData);
-        return topicData
-    }
-    else{
-        console.log("topic data is empty!");
-    }
-    
-}
