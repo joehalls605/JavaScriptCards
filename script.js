@@ -69,9 +69,12 @@ const topicData = [
 const dropdown = document.getElementById("dropdown");
 const selectedOption = document.getElementById("selectedOption");
 const startGameBtn = document.getElementById("startGameBtn");
-const nxtBtnElement = document.getElementById("nxtBtn");
 const gameElement = document.getElementById("game");
 const menuElement = document.getElementById("menu");
+const revealAnswerElement = document.getElementById("revealAnswer");
+const questionElement = document.getElementById("question");
+
+
 
 
 // GLOBAL VARIABLES
@@ -80,7 +83,6 @@ let filteredQuestions = [];
 
 
 startGameBtn.addEventListener("click", startGame);
-nxtBtnElement.addEventListener("click", showNextQuestion);
 
 function startGame() {
     console.log("start game!");
@@ -88,7 +90,7 @@ function startGame() {
     filterQuestionsByTopic();
     currentQuestionIndex = 0; // Reset to first question
     showCard(currentQuestionIndex);
-    menuElement.classList.add("hidden");
+
 
 }
 
@@ -131,12 +133,10 @@ function showCard(index){
         const question = filteredQuestions[index].question;
         console.log("This is the question" + question);
 
-        const questionElement = document.getElementById("question");
         questionElement.textContent = question;
 
         const answer = filteredQuestions[index].answer;
         console.log(answer);
-        const revealAnswerElement = document.getElementById("revealAnswer");
         revealAnswerElement.addEventListener("click", function(){
             revealAnswerElement.textContent = answer;
         });
@@ -148,14 +148,5 @@ function showCard(index){
 
 }
 
-function showNextQuestion(){
-    if(currentQuestionIndex < filteredQuestions.length -1){
-        currentQuestionIndex++;
-        showCard(currentQuestionIndex);
-    }
-    else{
-        console.log("No more questions");
-    }
-}
 
 
