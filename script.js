@@ -112,6 +112,16 @@ function showCard(index){
         const question = filteredQuestions[index].question;
         console.log("This is the question" + question);
 
+        const questionElement = document.getElementById("question");
+        questionElement.textContent = question;
+
+        const answer = filteredQuestions[index].answer;
+        console.log(answer);
+        const revealAnswerElement = document.getElementById("revealAnswer");
+        revealAnswerElement.addEventListener("click", function(){
+            revealAnswerElement.textContent = answer;
+        });
+
         // NEED TO UPDATE DOM TO SHOW THIS.
     }
     else{
