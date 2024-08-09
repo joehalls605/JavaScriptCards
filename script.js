@@ -63,8 +63,6 @@ const topicData = [
     }
 ];
 
-
-
 // DOM Elements
 const dropdown = document.getElementById("dropdown");
 const selectedOption = document.getElementById("selectedOption");
@@ -73,80 +71,73 @@ const gameElement = document.getElementById("game");
 const menuElement = document.getElementById("menu");
 const revealAnswerElement = document.getElementById("revealAnswer");
 const questionElement = document.getElementById("question");
-
-
-
+const nextBtn = document.getElementById("nxtBtn");
 
 // GLOBAL VARIABLES
 let currentQuestionIndex = 0;
 let filteredQuestions = [];
 
-
+// Set up event listeners
 startGameBtn.addEventListener("click", startGame);
+nextBtn.addEventListener("click", nextQuestion);
 
 function startGame() {
     console.log("start game!");
-    // shuffleQuestions(topicData);
     filterQuestionsByTopic();
     currentQuestionIndex = 0; // Reset to first question
     showCard(currentQuestionIndex);
 
-
+    // Set up the reveal answer event listener once
+    revealAnswerElement.addEventListener("click", function() {
+        if (filteredQuestions.length > 0) {
+            revealAnswerElement.textContent = filteredQuestions[currentQuestionIndex].answer;
+        }
+    });
 }
 
-function filterQuestionsByTopic(){
+function filterQuestionsByTopic() {
     const selectedValue = dropdown.value;
     console.log('Selected Value:', selectedValue);
 
     filteredQuestions = topicData.filter(item => item.topic === selectedValue);
     shuffleQuestions(filteredQuestions);
 
-    if(filteredQuestions.length > 0){
+    if (filteredQuestions.length > 0) {
         showCard(currentQuestionIndex);
-    }
-    else{
+    } else {
         console.log("No more questions for this topic.");
     }
 }
 
-// Shuffling the questions generally - unfinished.
-function shuffleQuestions(filteredQuestions){
-    if(filteredQuestions){
-        for(let i = filteredQuestions.length - 1; i > 0; i--){
-            // Generate a random index between 0 and i (inclusive)
-            const j = Math.floor(Math.random() * (i + 1));
-            [filteredQuestions[i], filteredQuestions[j]] = [filteredQuestions[j], filteredQuestions[i]];
-        }
-        console.log("randomised"+ filteredQuestions);
-        return filteredQuestions
+// Shuffling the questions generally
+function shuffleQuestions(questions) {
+    for (let i = questions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [questions[i], questions[j]] = [questions[j], questions[i]];
     }
-    else{
-        console.log("topic data is empty!");
-    }
-    
+    console.log("Randomized questions: " + questions);
+    return questions;
 }
 
-
-
-function showCard(index){
-    if(index < filteredQuestions.length){
+function showCard(index) {
+    if (index < filteredQuestions.length) {
         const question = filteredQuestions[index].question;
-        console.log("This is the question" + question);
+        console.log("This is the question: " + question);
 
         questionElement.textContent = question;
 
-        const answer = filteredQuestions[index].answer;
-        console.log(answer);
-        revealAnswerElement.addEventListener("click", function(){
-            revealAnswerElement.textContent = answer;
-        });
-
-    }
-    else{
+        // Prepare the answer for revealing
+        revealAnswerElement.textContent = "Click to reveal the answer";
+    } else {
         console.log("No more questions");
     }
-
 }
 
-
-
+function nextQuestion() {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < filteredQuestions.length) {
+        showCard(currentQuestionIndex);
+    } else {
+        console.log("No more questions");
+    }
+}
