@@ -87,68 +87,81 @@ const dropdown = document.getElementById("dropdown");
 const selectedOption = document.getElementById("selectedOption");
 const startGameBtn = document.getElementById("startGameBtn");
 const nxtBtnElement = document.getElementById("nxtBtn");
-nxtBtnElement.classList.add("hidden");
 const gameElement = document.getElementById("game");
 const menuElement = document.getElementById("menu");
 
+
+// GLOBAL VARIABLES
 let currentQuestionIndex = 0;
+let filteredQuestions = [];
+
 
 startGameBtn.addEventListener("click", startGame);
+nxtBtnElement.addEventListener("click", showNextQuestion);
 
 function startGame() {
     console.log("start game!");
+    // shuffleQuestions(topicData);
+    filterQuestionsByTopic();
     currentQuestionIndex = 0; // Reset to first question
     showCard(currentQuestionIndex);
-    nxtBtnElement.classList.remove("hidden");
     menuElement.classList.add("hidden");
 
 }
 
-function showCard(index) {
-    if (index >= topicData.length) {
-        console.error("Index out of bounds");
-        return;
-    }
-    
-    console.log(index);
-
-    const { topic, question, answer } = topicData[index];
-
-    // Clear previous content
-    gameElement.innerHTML = "";
-
-    // Create a container div for the flashcard
-    const flashCard = document.createElement('div');
-    gameElement.appendChild(flashCard);
-
-    // Display topic and question
-    const topicElement = document.createElement('h3');
-    topicElement.textContent = `Topic: ${topic}`;
-    
-    const questionElement = document.createElement('h3');
-    questionElement.textContent = `Question: ${question}`;
-    
-    flashCard.append(topicElement, questionElement);
-
-    const revealBtn = document.createElement("button");
-    revealBtn.textContent = "Reveal";
-    flashCard.appendChild(revealBtn);
-
-    // Event listener to reveal the answer
-    revealBtn.addEventListener("click", () => {
-        const answerElement = document.createElement('p');
-        answerElement.textContent = `Answer: ${answer}`;
-        flashCard.appendChild(answerElement);
+// Filter questions by topic.
+function filterQuestionsByTopic(){
+  
+    const selectedValue = dropdown.value;
+    console.log('Selected Value:', selectedValue);
+    filteredQuestions = topicData.filter(item => {
+        return item.topic === selectedValue;
     });
+    if(filteredQuestions.length > 0){
+        showCard(currentQuestionIndex);
+    }
+    else{
+        console.log("no more questions for this topic.");
+    }
 }
 
-// Event listener for "Next" button
-nxtBtnElement.addEventListener("click", () => {
-    currentQuestionIndex++;
-    if (currentQuestionIndex < topicData.length) {
-        showCard(currentQuestionIndex);
-    } else {
-        console.log("No more questions available.");
-        gameElement.innerHTML = "<p>No more questions available.</p>";
+function showCard(index){
+    if(index < filteredQuestions.length){
+        const question = filteredQuestions[index].question;
+        console.log(question);
+
+        // NEED TO UPDATE DOM TO SHOW THIS.
     }
-});
+    else{
+        console.log("No more questions");
+    }
+
+}
+
+function showNextQuestion(){
+    if(currentQuestionIndex < filteredQuestions.length -1){
+        currentQuestionIndex++;
+        showCard(currentQuestionIndex);
+    }
+    else{
+        console.log("No more questions");
+    }
+}
+
+
+// Shuffling the questions generally - unfinished.
+function shuffleQuestions(topicData){
+    if(topicData){
+        for(let i = topicData.length - 1; i > 0; i--){
+            // Generate a random index between 0 and i (inclusive)
+            const j = Math.floor(Math.random() * (i + 1));
+            [topicData[i], topicData[j]] = [topicData[j], topicData[i]];
+        }
+        console.log("randomised"+ topicData);
+        return topicData
+    }
+    else{
+        console.log("topic data is empty!");
+    }
+    
+}
