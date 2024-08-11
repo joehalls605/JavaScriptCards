@@ -68,6 +68,7 @@ const dropdown = document.getElementById("dropdown");
 const selectedOption = document.getElementById("selectedOption");
 const startGameBtn = document.getElementById("startGameBtn");
 const gameElement = document.getElementById("game");
+gameElement.classList.add("hidden");
 const menuElement = document.getElementById("menu");
 const revealAnswerElement = document.getElementById("revealAnswer");
 const questionElement = document.getElementById("question");
@@ -82,6 +83,9 @@ startGameBtn.addEventListener("click", startGame);
 nextBtn.addEventListener("click", nextQuestion);
 
 function startGame() {
+    gameElement.classList.remove("hidden");
+    nextBtn.style.display = "block";
+    revealAnswerElement.style.display = "block";
     console.log("start game!");
     filterQuestionsByTopic();
     currentQuestionIndex = 0; // Reset to first question
@@ -127,7 +131,7 @@ function showCard(index) {
         questionElement.textContent = question;
 
         // Prepare the answer for revealing
-        revealAnswerElement.textContent = "Click to reveal the answer";
+        revealAnswerElement.textContent = "Reveal Answer";
     } else {
         console.log("No more questions");
     }
@@ -138,6 +142,6 @@ function nextQuestion() {
     if (currentQuestionIndex < filteredQuestions.length) {
         showCard(currentQuestionIndex);
     } else {
-        console.log("No more questions");
+        location.reload();
     }
 }
