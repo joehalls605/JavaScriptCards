@@ -76,14 +76,38 @@ const nextBtn = document.getElementById("nxtBtn");
 const emojiElement = document.getElementById("emoji");
 const scoreElement = document.getElementById("score");
 const rememberedElement = document.getElementById("remembered");
-
-
+const flashcardQuotesElement = document.getElementById("flashcardQuotes");
+const headerElement = document.getElementById("header");
 
 
 // GLOBAL VARIABLES
 let currentQuestionIndex = 0;
 let filteredQuestions = [];
 let score = 0;
+
+const flashCardQuotes = [
+    "Flashcards turn study sessions into a game, making learning both effective and enjoyable.",
+    "With flashcards, repetition becomes a strategy for mastery rather than a chore.",
+    "Flashcards help reinforce memory through active recall, transforming information into lasting knowledge.",
+    "Harness the power of flashcards: they turn fragmented information into a cohesive understanding.",
+    "Flashcards are a simple yet powerful tool for making complex concepts more accessible and memorable.",
+    "Using flashcards regularly builds confidence and deepens comprehension, one card at a time.",
+    "Flashcards transform study time into active engagement, making learning more dynamic and effective.",
+    "The beauty of flashcards lies in their simplicity, offering a versatile approach to mastering any subject."
+  ];
+
+const learningBenefitsQuotes = [
+    "Learning fuels personal growth and opens doors to new opportunities and experiences.",
+    "Knowledge is power; the more you learn, the more you can achieve and influence the world around you.",
+    "Every new skill you acquire builds confidence and enhances your ability to adapt to new challenges.",
+    "Learning encourages curiosity and fosters a lifelong love of discovery and exploration.",
+    "The process of learning strengthens your brain, improves memory, and boosts cognitive abilities.",
+    "Continuous learning helps you stay relevant in a rapidly changing world and keeps you ahead of the curve.",
+    "Learning new things can be a source of joy and fulfillment, bringing a sense of accomplishment and pride.",
+    "The more you learn, the more you understand, and the better you become at solving problems and making informed decisions."
+];
+
+const secondEmoji = ["📕", "📘", "📙"]
 
 // Set up event listeners
 startGameBtn.addEventListener("click", startGame);
@@ -93,12 +117,29 @@ rememberedElement.addEventListener("click", calculateScore);
 
 
 document.addEventListener("DOMContentLoaded", function(){
-    renderEmoji();
+    renderEmoji(secondEmoji);
+    flashCardQuotesRender();
 
 });
 
+function flashCardQuotesRender() {
+    // Clear existing content in flashcardQuotesElement
+    flashcardQuotesElement.innerHTML = "";
+
+    const quotes = [...flashCardQuotes, ...learningBenefitsQuotes]
+
+    // Create and append a new element for each quote
+    quotes.forEach(quote => {
+        const quoteElement = document.createElement("p");
+        quoteElement.textContent = quote;
+        flashcardQuotesElement.appendChild(quoteElement); // Append each quote to the container
+    });
+}
+
+
 function startGame() {
     gameElement.classList.remove("hidden");
+    headerElement.classList.add("hidden");
     nextBtn.style.display = "block";
     revealAnswerElement.style.display = "block";
     console.log("start game!");
@@ -170,7 +211,7 @@ function nextQuestion() {
 }
 
 
-function renderEmoji(){
+function renderEmoji(...additionalEmojis){
     const randomNumber = Math.floor(Math.random() * 10) + 1;
     let emoji = "";
     switch(randomNumber){
@@ -189,10 +230,20 @@ function renderEmoji(){
  
      emojiElement.textContent += "" + emoji;
 
+     additionalEmojis.forEach(e => {
+        emojiElement.append(e);
+     });
+
      const welcomeBack = function(){
         const welcomeBackElement = document.createElement("div");
         welcomeBackElement.textContent = "Welcome back Joe!"
         emojiElement.append(welcomeBackElement);
+
+        const practiceMessage = () => {
+            const message = "  Let's practice!"
+            welcomeBackElement.append(message);
+        }
+        practiceMessage();
      }
 
      welcomeBack();
@@ -209,3 +260,4 @@ function renderScore(score){
        scoreElement.textContent = score; 
 }
 
+flashCardQuotes
