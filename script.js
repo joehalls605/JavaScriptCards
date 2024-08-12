@@ -74,14 +74,21 @@ const revealAnswerElement = document.getElementById("revealAnswer");
 const questionElement = document.getElementById("question");
 const nextBtn = document.getElementById("nxtBtn");
 const emojiElement = document.getElementById("emoji");
+const scoreElement = document.getElementById("score");
+const rememberedElement = document.getElementById("remembered");
+
+
+
 
 // GLOBAL VARIABLES
 let currentQuestionIndex = 0;
 let filteredQuestions = [];
+let score = 0;
 
 // Set up event listeners
 startGameBtn.addEventListener("click", startGame);
 nextBtn.addEventListener("click", nextQuestion);
+rememberedElement.addEventListener("click", calculateScore);
 
 
 
@@ -103,36 +110,16 @@ function startGame() {
     revealAnswerElement.addEventListener("click", function() {
         if (filteredQuestions.length > 0) {
             revealAnswerElement.textContent = filteredQuestions[currentQuestionIndex].answer;
-            revealAnswerElement.classList.add("animate-shake");
+            revealAnswerElement.classList.add("shake");
         }
 
         setTimeout(()=>{
-            revealAnswerElement.classList.remove("animate-shake");
+            revealAnswerElement.classList.remove("shake");
         }, 500)
     });
 }
 
 
-function renderEmoji(){
-    const randomNumber = Math.floor(Math.random() * 10) + 1;
-    let emoji = "";
-    switch(randomNumber){
-     case 1:
-         emoji = "😊";
-         break;
-     case 2:
-         emoji = "😁";
-         break;
-     case 3:
-         emoji = "😅";
-         default:
-         emoji = "😇";
-         break;
-     }
- 
-     emojiElement.textContent += "" + emoji;
-    
-}
     
 
 function filterQuestionsByTopic() {
@@ -182,4 +169,35 @@ function nextQuestion() {
     }
 }
 
+
+function renderEmoji(){
+    const randomNumber = Math.floor(Math.random() * 10) + 1;
+    let emoji = "";
+    switch(randomNumber){
+     case 1:
+         emoji = "😊";
+         break;
+     case 2:
+         emoji = "😁";
+         break;
+     case 3:
+         emoji = "😅";
+         default:
+         emoji = "😇";
+         break;
+     }
+ 
+     emojiElement.textContent += "" + emoji;
+    
+}
+
+function calculateScore(){
+    score++;
+    console.log(score);
+    renderScore(score);
+}
+
+function renderScore(score){
+       scoreElement.textContent = score; 
+}
 
