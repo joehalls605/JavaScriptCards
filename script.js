@@ -188,6 +188,14 @@ function renderEmoji(){
      }
  
      emojiElement.textContent += "" + emoji;
+
+     const welcomeBack = function(){
+        const welcomeBackElement = document.createElement("div");
+        welcomeBackElement.textContent = "Welcome back Joe!"
+        emojiElement.append(welcomeBackElement);
+     }
+
+     welcomeBack();
     
 }
 
