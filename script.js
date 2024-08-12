@@ -73,6 +73,7 @@ const menuElement = document.getElementById("menu");
 const revealAnswerElement = document.getElementById("revealAnswer");
 const questionElement = document.getElementById("question");
 const nextBtn = document.getElementById("nxtBtn");
+const emojiElement = document.getElementById("emoji");
 
 // GLOBAL VARIABLES
 let currentQuestionIndex = 0;
@@ -81,6 +82,13 @@ let filteredQuestions = [];
 // Set up event listeners
 startGameBtn.addEventListener("click", startGame);
 nextBtn.addEventListener("click", nextQuestion);
+
+
+
+document.addEventListener("DOMContentLoaded", function(){
+    renderEmoji();
+
+});
 
 function startGame() {
     gameElement.classList.remove("hidden");
@@ -95,9 +103,37 @@ function startGame() {
     revealAnswerElement.addEventListener("click", function() {
         if (filteredQuestions.length > 0) {
             revealAnswerElement.textContent = filteredQuestions[currentQuestionIndex].answer;
+            revealAnswerElement.classList.add("animate-shake");
         }
+
+        setTimeout(()=>{
+            revealAnswerElement.classList.remove("animate-shake");
+        }, 500)
     });
 }
+
+
+function renderEmoji(){
+    const randomNumber = Math.floor(Math.random() * 10) + 1;
+    let emoji = "";
+    switch(randomNumber){
+     case 1:
+         emoji = "😊";
+         break;
+     case 2:
+         emoji = "😁";
+         break;
+     case 3:
+         emoji = "😅";
+         default:
+         emoji = "😇";
+         break;
+     }
+ 
+     emojiElement.textContent += "" + emoji;
+    
+}
+    
 
 function filterQuestionsByTopic() {
     const selectedValue = dropdown.value;
@@ -145,3 +181,5 @@ function nextQuestion() {
         location.reload();
     }
 }
+
+
