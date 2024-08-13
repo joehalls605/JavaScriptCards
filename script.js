@@ -112,14 +112,27 @@ const secondEmoji = ["📕", "📘", "📙"]
 // Set up event listeners
 startGameBtn.addEventListener("click", startGame);
 nextBtn.addEventListener("click", nextQuestion);
-rememberedElement.addEventListener("click", calculateScore);
 
 
 
 document.addEventListener("DOMContentLoaded", function(){
     renderEmoji(secondEmoji);
     flashCardQuotesRender();
+    rememberedElement.addEventListener("click", calculateScore);
+    renderScore(score);
 
+});
+
+ // Set up the reveal answer event listener once
+ revealAnswerElement.addEventListener("click", function() {
+    if (filteredQuestions.length > 0) {
+        revealAnswerElement.textContent = filteredQuestions[currentQuestionIndex].answer;
+        revealAnswerElement.classList.add("shake");
+    }
+
+    setTimeout(()=>{
+        revealAnswerElement.classList.remove("shake");
+    }, 500)
 });
 
 function flashCardQuotesRender() {
@@ -147,17 +160,7 @@ function startGame() {
     currentQuestionIndex = 0; // Reset to first question
     showCard(currentQuestionIndex);
 
-    // Set up the reveal answer event listener once
-    revealAnswerElement.addEventListener("click", function() {
-        if (filteredQuestions.length > 0) {
-            revealAnswerElement.textContent = filteredQuestions[currentQuestionIndex].answer;
-            revealAnswerElement.classList.add("shake");
-        }
-
-        setTimeout(()=>{
-            revealAnswerElement.classList.remove("shake");
-        }, 500)
-    });
+   
 }
 
 
@@ -256,8 +259,7 @@ function calculateScore(){
     renderScore(score);
 }
 
-function renderScore(score){
-       scoreElement.textContent = score; 
+function renderScore(score) {
+    scoreElement.textContent = `Score: ${score}`;
 }
 
-flashCardQuotes
