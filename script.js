@@ -84,6 +84,7 @@ const headerElement = document.getElementById("header");
 let currentQuestionIndex = 0;
 let filteredQuestions = [];
 let score = 0;
+let rememberedClicked = false;
 
 const flashCardQuotes = [
     "Flashcards turn study sessions into a game, making learning both effective and enjoyable.",
@@ -199,6 +200,8 @@ function showCard(index) {
 
         // Prepare the answer for revealing
         revealAnswerElement.textContent = "Reveal Answer";
+        rememberedClicked = false;
+        rememberedClicked.disabled = false;
     } else {
         console.log("No more questions");
     }
@@ -208,6 +211,9 @@ function nextQuestion() {
     currentQuestionIndex++;
     if (currentQuestionIndex < filteredQuestions.length) {
         showCard(currentQuestionIndex);
+
+        rememberedClicked = false;
+        rememberedElement.disabled = false;
     } else {
         location.reload();
     }
@@ -253,10 +259,26 @@ function renderEmoji(...additionalEmojis){
     
 }
 
+// Using high order function to double the score.
+
 function calculateScore(){
     score++;
     console.log(score);
-    renderScore(score);
+
+    function double(x){
+        return x * 2;
+    }
+    
+    function applyTwice(fn, value){
+        return fn(fn(value));
+    }
+
+    const result = applyTwice(double, score);
+
+    renderScore(result);
+
+    rememberedClicked = true;
+    rememberedElement.disabled = true;
 }
 
 function renderScore(score) {
